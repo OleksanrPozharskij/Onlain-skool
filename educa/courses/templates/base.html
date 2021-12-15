@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+     <meta charset="utf-8" />
+     <title>{% block title %}Cool Student{% endblock %}</title>
+     <link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+<body>
+     <div id="header">
+        <a href="/" class="logo">Cool Student</a>
+         <a class="logo2" >Ласкаво просимо {{request.user}}</a>
+
+         <ul class="menu">
+            {% if request.user.is_authenticated %}
+                <li><a href="{% url 'logout' %}">Вийти</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Увійти</a></li>
+            {% endif %}
+            {% if user.is_authenticated %}
+             <a href="{% url 'student_course_list' %}">Мої курси</a>
+             <a href="{% url 'index' %}">Тести</a>
+             {% endif %}
+             {% if not user.is_authenticated %}
+                    <li><a href="{% url 'student_registration' %}" >Зареєструватись</a></li>
+             {% endif %}
+         </ul>
+             {% for group in request.user.groups.all %}
+                {% if group.name == 'Instructors' %}
+                    <a class="logo3" href="{% url 'manage_course_list' %}">Створити курс</a>
+                {% endif %}
+            {% endfor %}
+     </div>
+     <div id="content">
+         {% block content %}
+         {% endblock %}
+     </div>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/
+        3.3.1/jquery.min.js"></script>
+     <script
+    src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+    src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+     <script>
+        $(document).ready(function() {
+         {% block domready %}
+
+$('#modules').sortable({
+ stop: function(event, ui) {
+ modules_order = {};
+ $('#modules').children().each(function(){
+ // Обновляем поле порядкового номера.
+ $(this).find('.order').text($(this).index() + 1);
+ // Связываем порядковый номер с идентификатором объекта.
+ modules_order[$(this).data('id')] = $(this).index();
+ });
+ $.ajax({
+ type: 'POST',
+ url: '{% url "module_order" %}',
+ contentType: 'application/json; charset=utf-8',
+ dataType: 'json',
+ data: JSON.stringify(modules_order)
+ });
+ }
+});
+$('#module-contents').sortable({
+ stop: function(event, ui) {
+ contents_order = {};
+ $('#module-contents').children().each(function(){
+ // Связываем порядковый номер с идентификатором объекта.
+ contents_order[$(this).data('id')] = $(this).index();
+ });
+ $.ajax({
+ type: 'POST',
+ url: '{% url "content_order" %}',
+ contentType: 'application/json; charset=utf-8',
+ dataType: 'json',
+data: JSON.stringify(contents_order),
+ });
+ }
+});
+
+         {% endblock %}
+        });
+     </script>
+
+</body>
+</html>

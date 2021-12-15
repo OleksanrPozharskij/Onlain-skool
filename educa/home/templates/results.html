@@ -1,0 +1,127 @@
+{% extends 'base2.html' %}
+{% block title %} Результати {% endblock %}
+{% block css %}
+<style>
+body{
+    background:#EFFBEF;
+}
+ .head1 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 50px;
+  }
+
+  .head2 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .logo {
+    position: relative;
+    bottom: 2rem;
+  }
+
+   .container-fluid {
+    height: 60px;
+    border: 0.1px solid #49dd24;
+  }
+    .form-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+<!--   #btn {-->
+<!--    border: 5px solid;-->
+<!--    border-image-slice: 1;-->
+<!--    background: var(&#45;&#45;gradient) !important;-->
+<!--    -webkit-background-clip: text !important;-->
+<!--    -webkit-text-fill-color: transparent !important;-->
+<!--    border-image-source: var(&#45;&#45;gradient) !important;-->
+<!--    text-decoration: none;-->
+<!--    position: relative;-->
+<!--    left: 80px;-->
+<!--  }-->
+<!--  .attempt {-->
+<!--    &#45;&#45;gradient: linear-gradient(to left top, #49dd24 10%, #aaaaaa 90%) !important;-->
+<!--  }-->
+</style>
+{% endblock %}
+{% load static %}
+{% block body %}
+<div class="container mt-4">
+    <form action="{% url 'search_resultsscore' %}" method="get">
+  <input class="form-control" name="q" type="text" placeholder="Для пошуку введіть ім'я">
+</form>
+      <br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Користувач</th>
+            <th>Вікторина</th>
+            <th>Оцінка</th>
+            {% for group in request.user.groups.all %}
+              {% if group.name == 'Instructors' %}
+            <th>Видалити</th>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        </thead>
+{% for mark in marks %}
+<tr>
+  <td>{{mark.user}}</td>
+  <td>{{mark.quiz}}</td>
+  <td>{{mark.score}}</td>
+ {% for group in request.user.groups.all %}
+     {% if group.name == 'Instructors' %}
+    <td><a href="{% url 'delete_result' mark.id %}" class="btn btn-danger">Видалити</a></td>
+      {% endif %}
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+</div>
+<script>
+      $.ajax({
+        type: 'POST',
+        url: `${url}save/`,
+        data: data,
+        success: function(response){
+            const marks = response.marks
+            quizForm.classList.add('not-visible')
+            totalScore.innerHTML = `<h4>Final Score : ${response.score} Out Of {{quiz.number_of_questions}} marks</h4>`
+
+
+            marks.forEach(res=>{
+                const resDiv = document.createElement("div")
+                   const url = window.location.href= '/QuizApp/results/'
+
+
+                for (const [question, resp] of Object.entries(res)){
+
+                    resDiv.innerHTML += question
+                    const cls = ['container', 'p-3', 'text-light', 'h6']
+                    resDiv.classList.add(...cls)
+
+
+                    if (resp=='not answered') {
+                        resDiv.innerHTML += '- not answered'
+                        resDiv.classList.add('bg-info')
+                    }
+                    else {
+                        const answer = resp['answered']
+                        const correct = resp['correct_answer']
+
+                        if (answer == correct) {
+                            resDiv.classList.add('bg-success')
+                            resDiv.innerHTML += ` answered: ${answer}`
+                        } else {
+                            resDiv.classList.add('bg-danger')
+                            resDiv.innerHTML += ` | correct answer: ${correct}`
+                            resDiv.innerHTML += ` | answered: ${answer}`
+                        }
+                    }
+                }
+                resultBox.append(resDiv)
+</script>
+{% endblock %}

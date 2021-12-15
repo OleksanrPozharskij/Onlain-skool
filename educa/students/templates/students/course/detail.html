@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load cache %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock %}
+
+{% block content %}
+    <h1>
+        <center> {{ module.title }}</center>
+    </h1>
+    <div class="contents">
+        <h3>Модулі</h3>
+        <ul id="modules">
+        {% for m in object.modules.all %}
+            <li data-id="{{ m.id }}" {% if m == module %}class="selected"{% endif %}>
+                <a href="{% url 'student_course_detail_module' object.id m.id %}">
+                    <span>
+                        Модуль <span class="order">{{ m.order|add:1 }}</span>
+                    </span>
+                    <br>
+                    {{ m.title }}
+                </a>
+            </li>
+
+        {% empty %}
+            <li>Модулів поки немає.</li>
+        {% endfor %}
+        </ul>
+        <h3>
+             <a href="{% url 'chat:course_chat_room' object.id %}">
+                Чат
+             </a>
+         </h3>
+    </div>
+    <div class="module">
+   {% cache 600 module_contents module %}
+        {% for content in module.contents.all %}
+            {% with item=content.item %}
+                <h2>{{ item.title }}</h2>
+                {{ item.render|safe }}
+            {% endwith %}
+        {% endfor %}
+    {% endcache %}
+
+    </div>
+{% endblock %}

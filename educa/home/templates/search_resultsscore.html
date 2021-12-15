@@ -1,0 +1,108 @@
+{% extends 'base2.html' %}
+{% block title %} Пошук {% endblock %}
+{% block css %}
+<style>
+body{
+    background:#EFFBEF;
+}
+
+
+ .head1 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 50px;
+  }
+
+  .head2 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .logo {
+    position: relative;
+    bottom: 2rem;
+  }
+
+   .container-fluid {
+    height: 60px;
+    border: 0.1px solid #49dd24;
+  }
+
+  .form-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+   .p-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 1px;
+
+  }
+  #sub{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+               }
+<!--   #btn {-->
+<!--    border: 5px solid;-->
+<!--    border-image-slice: 1;-->
+<!--    background: var(&#45;&#45;gradient) !important;-->
+<!--    -webkit-background-clip: text !important;-->
+<!--    -webkit-text-fill-color: transparent !important;-->
+<!--    border-image-source: var(&#45;&#45;gradient) !important;-->
+<!--    text-decoration: none;-->
+<!--    position: relative;-->
+<!--    left: 80px;-->
+<!--  }-->
+<!--  .attempt {-->
+<!--    &#45;&#45;gradient: linear-gradient(to left top, #49dd24 10%, #aaaaaa 90%) !important;-->
+<!--  }-->
+</style>
+{% endblock %}
+{% load static %}
+{% block body %}
+ <h1>Результат пошуку</h1>
+
+
+<div class="container mt-4">
+    <form action="{% url 'search_resultsscore' %}" method="get">
+  <input name="q" type="text" placeholder="Введіть ім'я">
+</form>
+      <br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Користувач</th>
+            <th>Вікторина</th>
+            <th>Оцінка</th>
+            {% for group in request.user.groups.all %}
+              {% if group.name == 'Instructors' %}
+            <th>Видалити</th>
+              {% endif %}
+            {% endfor %}
+          </tr>
+        </thead>
+  <ul>
+  {% for Marks_Of_User in object_list %}
+</ul>
+
+{% for mark in marks %}
+{% endfor %}
+<tr>
+
+  <td>{{Marks_Of_User.user}}</td>
+  <td>{{Marks_Of_User.quiz}}</td>
+  <td>{{Marks_Of_User.score}}</td>
+{% for group in request.user.groups.all %}
+     {% if group.name == 'Instructors' %}
+    <td><a href="delete_result {{mark.id}}" class="btn btn-danger">Delete</a></td>
+      {% endif %}
+{% endfor %}
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

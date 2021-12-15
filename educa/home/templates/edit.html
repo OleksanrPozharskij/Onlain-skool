@@ -1,0 +1,91 @@
+{% extends 'base2.html' %}
+{% block title %} Редагувати вікторину {% endblock %}
+{% block css %}
+<style>
+body{
+    background:#EFFBEF;
+}
+ .head1 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 50px;
+  }
+
+  .head2 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .logo {
+    position: relative;
+    bottom: 2rem;
+  }
+
+   .container-fluid {
+    height: 60px;
+    border: 0.1px solid #49dd24;
+  }
+
+  .form-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+
+    .p-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 1px;
+
+  }
+  #sub{
+        margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+<!--   #btn {-->
+<!--    border: 5px solid;-->
+<!--    border-image-slice: 1;-->
+<!--    background: var(&#45;&#45;gradient) !important;-->
+<!--    -webkit-background-clip: text !important;-->
+<!--    -webkit-text-fill-color: transparent !important;-->
+<!--    border-image-source: var(&#45;&#45;gradient) !important;-->
+<!--    text-decoration: none;-->
+<!--    position: relative;-->
+<!--    left: 80px;-->
+<!--  }-->
+<!--  .attempt {-->
+<!--    &#45;&#45;gradient: linear-gradient(to left top, #49dd24 10%, #aaaaaa 90%) !important;-->
+<!--  }-->
+</style>
+{% endblock %}
+{% load static %}
+{% block body %}
+
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <p>
+<!--            <p class="p-control">Введіть нову назву тесту </p>-->
+            <input placeholder="Введіть нову назву тесту" class="form-control" type="text" name="name" value="{{quiz.name}}"   />
+        </p>
+          <p>
+<!--            <p class="p-control">Введіть новий опис</p>-->
+            <input placeholder="Введіть новий опис" class="form-control" type="text" name="desc" value="{{quiz.desc}}" />
+        </p>
+          <p>
+<!--            <p class="p-control">Вкажіть кількість тестових завдань</p>-->
+            <input  placeholder="Введіть кількість тестових завдань" class="form-control" type="number" name="number_of_questions" value="{{quiz.number_of_questions}}" required />
+        </p>
+        <p>
+<!--            <p class="p-control">Вкажіть час для проходження тесту</p>-->
+            <input placeholder="Вкажіть час для проходження тесту" class="form-control" type="number"  name="time" value="{{quiz.time}}" required />
+        </p>
+        <input id="sub" href="{% url 'add_quiz'%}" class="btn btn-warning" type="submit" value="Редагувати" >
+<!--        <td><a href="{% url 'add_quiz'%}" class="btn btn-warning" type="submit"  value="Сохранить">Редагувати</a></td>-->
+    </form>
+
+</div>
+{% endblock %}
+

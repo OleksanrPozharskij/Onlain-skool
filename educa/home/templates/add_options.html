@@ -1,0 +1,83 @@
+{% extends 'base2.html' %}
+{% block title %} Додати параметри {% endblock %}
+{% block css %}
+<style>
+body{
+    background:#EFFBEF;
+}
+ .head1 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 50px;
+  }
+
+  .head2 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .logo {
+    position: relative;
+    bottom: 2rem;
+  }
+
+   .container-fluid {
+    height: 60px;
+    border: 0.1px solid #49dd24;
+  }
+
+    .form-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+
+    .p-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 1px;
+
+  }
+  #sub{
+        margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+<!--   #btn {-->
+<!--    border: 5px solid;-->
+<!--    border-image-slice: 1;-->
+<!--    background: var(&#45;&#45;gradient) !important;-->
+<!--    -webkit-background-clip: text !important;-->
+<!--    -webkit-text-fill-color: transparent !important;-->
+<!--    border-image-source: var(&#45;&#45;gradient) !important;-->
+<!--    text-decoration: none;-->
+<!--    position: relative;-->
+<!--    left: 80px;-->
+<!--  }-->
+<!--  .attempt {-->
+<!--    &#45;&#45;gradient: linear-gradient(to left top, #49dd24 10%, #aaaaaa 90%) !important;-->
+<!--  }-->
+</style>
+{% endblock %}
+{% load static %}
+{% block body %}
+<div class="container mt-4">
+    <form action="" method="POST"> {% csrf_token %}
+        {{ formset.as_p }}
+<!--        {{ form.content }}-->
+<!--        {{ form.correct }}-->
+<!--        {{ form.question }}<br>-->
+        <button type="submit" class="btn btn-info">Додати</button>
+    </form>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+    {% if alert %}
+alert("Питання успішно додано !!!");
+document.location = '{% url 'add_question' %}'
+{% endif %}
+</script>
+{% endblock %}
+

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+ Реєстрація
+{% endblock %}
+{% block css %}
+<style>
+  .form-control{
+               margin-left: 32%;
+               width: 500px;
+               margin-top: 20px;
+  }
+</style>
+{% endblock %}
+{% block content %}
+     <h1>
+        Реєстрація
+     </h1>
+     <div class="module">
+     <p>Введіть свої дані, щоб створити обліковий запис:</p>
+         <form class="form-control" action="" method="post">
+             {{ form.as_p }}
+             {% csrf_token %}
+             <p><input type="submit" value="Створити мій акаунт"></p>
+         </form>
+     </div>
+{% endblock %}

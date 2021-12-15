@@ -1,0 +1,57 @@
+{% extends 'base2.html' %}
+{% block title %} Видалити питання {% endblock %}
+{% block css %}
+<style>
+body{
+    background:#EFFBEF;
+}
+ .head1 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+    height: 50px;
+  }
+
+  .head2 {
+    color: #49dd24;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  .logo {
+    position: relative;
+    bottom: 2rem;
+  }
+
+   .container-fluid {
+    height: 60px;
+    border: 0.1px solid #49dd24;
+  }
+<!--   #btn {-->
+<!--    border: 5px solid;-->
+<!--    border-image-slice: 1;-->
+<!--    background: var(&#45;&#45;gradient) !important;-->
+<!--    -webkit-background-clip: text !important;-->
+<!--    -webkit-text-fill-color: transparent !important;-->
+<!--    border-image-source: var(&#45;&#45;gradient) !important;-->
+<!--    text-decoration: none;-->
+<!--    position: relative;-->
+<!--    left: 80px;-->
+<!--  }-->
+<!--  .attempt {-->
+<!--    &#45;&#45;gradient: linear-gradient(to left top, #49dd24 10%, #aaaaaa 90%) !important;-->
+<!--  }-->
+</style>
+{% endblock %}
+{% load static %}
+{% block body %}
+<div class="container mt-4">
+    <h4>Ви впевнені, що хочете видалити {{quiz.content}}</h4>
+    <br>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <a class="btn btn-warning" href="{% url 'add_quiz'%}">Відміна</a>
+        <input class="btn btn-danger" type="submit"  value="Видалити">
+    </form>
+</div>
+
+{% endblock %}
